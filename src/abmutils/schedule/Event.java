@@ -18,4 +18,8 @@ class Event {
 		this.method = method;
 	}
 	
+	public String dump(){
+		return this.toString();
+	}
+	
 }
