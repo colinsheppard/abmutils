@@ -1,7 +1,7 @@
 abmutils
 ========
 
-# Simple Agent-Based Modeling Framework for java
+## Simple Agent-Based Modeling Framework for java
 
 This library provides a very simple set of tools useful to developing agent-based models (ABMs).  The most widely used ABM platform for Java is [Repast](http://repast.sourceforge.net/) which I have found to be cumbersome to used, especially when the models I implement are too complicated or large to have an use for an interactive graphical display of my agents during simulations.
 
