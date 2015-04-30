@@ -21,10 +21,12 @@ public class TestSchedule {
 			schedule.addEvent(agent1,"printHash", 1.0, 2.0);
 			schedule.addEvent(agent1,"printHash", 1.0, 1.0);
 			schedule.addEvent(agent2,"printHash", 5.0, 1.0);
+			schedule.performScheduledTasks();
 		} catch (Exception e) {
 			log.error(e);
+		} catch (Throwable e) {
+			log.error(e);
 		}
-		schedule.performScheduledTasks();
 		try {
 			schedule.addEvent(agent1,"printHash", 1.0, 2.0);
 		} catch (Exception e) {
@@ -36,10 +38,12 @@ public class TestSchedule {
 			schedule.addEvent(agent1,"sayHello", 1.0, 2.0);
 			schedule.addEvent(agent1,"sayHello", 10.0, 2.0);
 			schedule.addEvent(agent1,"sayHello", 100.0, 2.0);
+			schedule.performScheduledTasks(50.0);
 		} catch (Exception e) {
 			log.error(e);
+		} catch (Throwable e) {
+			log.error(e);
 		}
-		schedule.performScheduledTasks(50.0);
 		log.info(schedule.getTick());
 	}
 }
