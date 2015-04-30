@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.TreeSet;
 
+
+
 // LOGGING
 import org.apache.logging.log4j.*;
 
@@ -29,25 +31,28 @@ public class Schedule {
 		Event event = new Event(nextEventID++,agent,method,eventTick,priority);
 		scheduleTree.add(event);
 	}
-	public void performScheduledTasks(){
+	public void performScheduledTasks() throws Throwable{
 		performScheduledTasks(Double.MAX_VALUE);
 	}	
-	public void performScheduledTasks(Double untilTick){ 
+	public void performScheduledTasks(Double untilTick) throws Throwable{ 
 		Event event = scheduleTree.isEmpty() ? null : scheduleTree.first();
 		while(event != null && event.tick <= untilTick){
-			if(debug)log.trace("performing event-id: "+event.id+" for agent: "+event.agent+" at tick:"+event.tick+" and priority:"+event.priority);
+			if(log.isTraceEnabled())log.trace("performing event-id: "+event.id+" for agent: "+event.agent+" at tick:"+event.tick+" and priority:"+event.priority);
 			
 			tick = event.tick;
 
 			try {
-				event.method.invoke(event.agent,null);
+				event.method.invoke(event.agent,(Object[])null);
 			} catch (IllegalArgumentException e) {
 				log.error(e);
 			} catch (IllegalAccessException e) {
 				log.error(e);
 			} catch (InvocationTargetException e) {
+				log.error(e.getTargetException());
+				throw(e.getTargetException());
+			} catch (RuntimeException e) {
 				log.error(e);
-			}
+			} 
 
 			// Remove the current event as is from the schedule
 			scheduleTree.remove(event);
@@ -71,9 +76,9 @@ public class Schedule {
 		}
 		if (!(reference && exporting)) {
 			buf.append(" [ ");
-			java.util.Iterator iter = scheduleTree.iterator();
+			java.util.Iterator<Event> iter = scheduleTree.iterator();
 			while(iter.hasNext()){
-				buf.append(((Event)iter.next()).dump());
+				buf.append((iter.next()).dump());
 				buf.append(" ");
 			}
 			buf.append("]");
