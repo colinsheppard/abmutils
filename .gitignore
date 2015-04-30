@@ -1,2 +1,5 @@
 bin
 lib
+/.apt_generated
+/target
+/target

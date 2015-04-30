@@ -13,7 +13,7 @@ public abstract class Global {
 	public File inputsDirectory = null;
 	public LinkedHashMap<String, ParameterValue> baseParams;
 	public LinkedHashMap<String, Parameter> parameterDefinitions;
-	public Schedule schedule;
+	public Schedule schedule = new Schedule();
 
 	public LinkedHashMap<String, Parameter> getParameterDefinitions() {
 		return parameterDefinitions;
