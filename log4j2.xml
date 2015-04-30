@@ -6,16 +6,7 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="abmutils.random" level="trace" additivity="false">
-      <AppenderRef ref="Console"/>
-    </Logger>
-    <Logger name="abmutils.schedule" level="trace" additivity="false">
-      <AppenderRef ref="Console"/>
-    </Logger>
-    <Logger name="abmutils.tests" level="trace" additivity="false">
-      <AppenderRef ref="Console"/>
-    </Logger>
-    <Root level="error">
+    <Root level="trace">
       <AppenderRef ref="Console"/>
     </Root>
   </Loggers>
