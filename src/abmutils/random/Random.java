@@ -20,29 +20,29 @@ public class Random {
 		}
 		return (instance);
 	}
-	public static void setSeed(Long seed){
+	public void setSeed(Long seed){
 		byte[] byteSeed = ByteBuffer.allocate(16).putLong(seed).array();
 		rng = new MersenneTwisterRNG(byteSeed);
 	}
-	public static ExponentialGenerator exponential(Double rate){
+	public ExponentialGenerator exponential(Double rate){
 		return new ExponentialGenerator(rate,rng);
 	}
-	public static PoissonGenerator poisson(Double mean){
+	public PoissonGenerator poisson(Double mean){
 		return new PoissonGenerator(mean,rng);
 	}
-	public static DiscreteUniformGenerator randomInt(Integer low,Integer high){
+	public DiscreteUniformGenerator randomInt(Integer low,Integer high){
 		return new DiscreteUniformGenerator(low, high, rng);
 	}
-	public static ContinuousUniformGenerator uniform(){
+	public ContinuousUniformGenerator uniform(){
 		return uniform(0.0,1.0);
 	}
-	public static ContinuousUniformGenerator uniform(Double low,Double high){
+	public ContinuousUniformGenerator uniform(Double low,Double high){
 		return new ContinuousUniformGenerator(low, high, rng);
 	}
-	public static GaussianGenerator gaussian(){
+	public GaussianGenerator gaussian(){
 		return gaussian(0.0,1.0);
 	}
-	public static GaussianGenerator gaussian(Double mean,Double stDev){
+	public GaussianGenerator gaussian(Double mean,Double stDev){
 		return new GaussianGenerator(mean,stDev,rng);
 	}
 }
