@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import abmutils.experiment.Parameter.DataType;
 import abmutils.experiment.Parameter.ValidationCode;
 
 import org.apache.logging.log4j.*;

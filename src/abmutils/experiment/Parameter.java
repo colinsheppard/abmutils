@@ -49,6 +49,10 @@ public class Parameter {
 			this.stringLow = this.rangeLow.equals("") ? 0 : Integer.parseInt(this.rangeLow);
 			this.stringHigh = this.rangeHigh.equals("") ? Integer.MAX_VALUE : Integer.parseInt(this.rangeHigh);
 			break;
+		case BOOL:
+		case DATE:
+		case DAY:
+			break;
 		}
 	}
 	public ValidationCode validate(String value){

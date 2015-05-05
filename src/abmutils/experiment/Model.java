@@ -2,9 +2,6 @@ package abmutils.experiment;
 
 import java.util.LinkedHashMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import abmutils.experiment.ParameterValue;
 
 public abstract class Model {

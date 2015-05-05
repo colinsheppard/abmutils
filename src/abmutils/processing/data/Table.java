@@ -371,6 +371,7 @@ public class Table {
         parseBasic(reader, header, false);
       }
     }
+    input.close();
   }
 
 

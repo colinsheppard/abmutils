@@ -10,10 +10,11 @@ import abmutils.schedule.Schedule;
 public abstract class Global {
 	public static Global instance = null;
 	public File experimentDirectory = null;
-	public File inputsDirectory = null;
+	public File inputsDirectory = null,outputsDirectory = null;
 	public LinkedHashMap<String, ParameterValue> baseParams;
 	public LinkedHashMap<String, Parameter> parameterDefinitions;
 	public Schedule schedule = new Schedule();
+	public ExperimentalGroup experimentalGroup;
 
 	public LinkedHashMap<String, Parameter> getParameterDefinitions() {
 		return parameterDefinitions;
@@ -41,6 +42,12 @@ public abstract class Global {
 	public void setInputsDirectory(File inputsDirectory) {
 		this.inputsDirectory = inputsDirectory;
 	}
+	public void setOutputsDirectory(File outputsDirectory) {
+		this.outputsDirectory = outputsDirectory;
+	}
+	public File getOutputsDirectory() {
+		return outputsDirectory;
+	}
 	public File getExperimentDirectory() {
 		return experimentDirectory;
 	}
@@ -63,5 +70,8 @@ public abstract class Global {
 	}
 	public Double getTick(){
 		return this.schedule.getTick();
+	}
+	public void setExperimentGroup(ExperimentalGroup experimentalGroup) {
+		this.experimentalGroup = experimentalGroup;
 	}
 }

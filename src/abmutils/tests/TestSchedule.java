@@ -1,6 +1,5 @@
 package abmutils.tests;
 
-import static org.junit.Assert.*;
 import abmutils.schedule.*;
 
 import org.apache.logging.log4j.*;

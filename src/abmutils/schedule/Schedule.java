@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 
 
+
 // LOGGING
 import org.apache.logging.log4j.*;
 
@@ -16,13 +17,13 @@ public class Schedule {
 	private TreeSet<Event> scheduleTree = new TreeSet<Event>(comparator);
 	private Long nextEventID = 0L;
 	private Double tick = 0.0;
-	private Boolean debug = true;
 	
 	public void addEvent(Object agent, String methodStr, Double eventTick, Double priority) throws Exception{
 		if(eventTick < tick)throw new Exception("Attempted to create an event in the past (tick "+eventTick+") but present moment is tick "+tick);
 		Method method = null;
 		try {
-			method = agent.getClass().getMethod(methodStr, null);
+			Class<? extends Object> class1 = agent.getClass();
+			method = class1.getMethod(methodStr);
 		} catch (SecurityException e) {
 			log.error(e);
 		} catch (NoSuchMethodException e) {
