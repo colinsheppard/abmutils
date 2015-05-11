@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bluepapa32:gradle-watch-plugin:0.1.5'
+    }
+}   
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+apply plugin: 'com.bluepapa32.watch'
+
+group = 'abmutils'
+version = '0.0.1'
+
+description = "Tools useful for building agent-based models in Java"
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': group,
+                   'Implementation-Version': version
+    }
+}
+repositories {
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version:'2.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version:'2.2'
+    compile group: 'junit', name: 'junit', version:'4.4'
+    compile group: 'org.yaml', name: 'snakeyaml', version:'1.15'
+    compile group: 'com.google.guava', name: 'guava', version:'18.0'
+    compile group: 'org.processing', name: 'core', version:'2.2.1'
+    compile group: 'org.apache.commons', name: 'commons-io', version:'1.3.2'
+    compile group: 'io.gatling.uncommons.maths', name: 'uncommons-maths', version:'1.2.3'
+}
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+watch {
+    java {
+        files files('src/main/java')
+        tasks 'build'
+    }
+}
