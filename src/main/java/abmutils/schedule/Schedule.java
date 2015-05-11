@@ -50,7 +50,6 @@ public class Schedule {
 				log.error(e);
 			} catch (InvocationTargetException e) {
 				log.error(e.getTargetException());
-				throw(e.getTargetException());
 			} catch (RuntimeException e) {
 				log.error(e);
 			} 

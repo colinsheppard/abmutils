@@ -27,7 +27,7 @@ public class Experiment {
 	protected LinkedHashMap<String, ParameterValue> baseParams = new LinkedHashMap <String, ParameterValue>();
 	protected Map<String,Object> exp;
 	
-	public Experiment(String parameterDefinitionFile, String experimentConfigurationFile) throws Exception,FileNotFoundException{
+	public Experiment(File parameterDefinitionFile, String experimentConfigurationFile) throws Exception,FileNotFoundException{
 		try {
 			this.loadParameterDefinitions(parameterDefinitionFile);
 			this.loadExperiment(experimentConfigurationFile);
@@ -45,10 +45,10 @@ public class Experiment {
 			e.printStackTrace();
 		}
 	}
-	private void loadParameterDefinitions(String paramDefinitionFile) throws FileNotFoundException, IOException, ParseException{
+	
+	private void loadParameterDefinitions(File parameterDefinitionFile) throws FileNotFoundException, IOException, ParseException{
 		LinkedHashMap<String, Parameter> parameterDefinitions = new LinkedHashMap<String, Parameter>();
-		String filename = this.getClass().getResource(paramDefinitionFile).getFile();
-		Table paramData = InputOutput.readTable(new File(filename));
+		Table paramData = InputOutput.readTable(parameterDefinitionFile);
 		for (int i = 0; i < paramData.getRowCount(); i++) {
 			Parameter newParam = new Parameter(paramData.getString(i,"Name"), 
 					paramData.getString(i, "DefaultValue"),
@@ -136,7 +136,9 @@ public class Experiment {
 		        } catch (IllegalAccessException ex) {
 		            log.error(ex);
 		        }
+				Global.getInstance().setParams(runParams);
 				((Model)modelRun).setParameters(runParams);
+				((Model)modelRun).setExperimentalGroup(experimentalGroup);
 				((Model)modelRun).initialize();
 				((Model)modelRun).run();
 			}

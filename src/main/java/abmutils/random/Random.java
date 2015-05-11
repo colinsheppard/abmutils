@@ -12,6 +12,7 @@ public class Random {
 	
 	private static Random instance = null;
 	private static MersenneTwisterRNG rng = new MersenneTwisterRNG();
+	private static DiscreteUniformGenerator fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
 
 	public static Random getInstance(){ 
 		if(instance == null){
@@ -43,5 +44,8 @@ public class Random {
 	}
 	public GaussianGenerator gaussian(Double mean,Double stDev){
 		return new GaussianGenerator(mean,stDev,rng);
+	}
+	public Boolean drawFiftyFifty(){
+		return this.fiftyFifty.nextValue() == 1;
 	}
 }
