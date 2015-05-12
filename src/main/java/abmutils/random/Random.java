@@ -45,6 +45,9 @@ public class Random {
 	public GaussianGenerator gaussian(Double mean,Double stDev){
 		return new GaussianGenerator(mean,stDev,rng);
 	}
+	public TriangleGenerator triangle(Double min, Double peak, Double max){
+		return new TriangleGenerator(min,peak,max,rng);
+	}
 	public Boolean drawFiftyFifty(){
 		return this.fiftyFifty.nextValue() == 1;
 	}
