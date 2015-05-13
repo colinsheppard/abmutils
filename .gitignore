@@ -5,3 +5,5 @@ lib
 /target
 /build
 .gradle
+.classpath
+.settings
