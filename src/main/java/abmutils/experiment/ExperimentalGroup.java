@@ -2,7 +2,7 @@ package abmutils.experiment;
 
 import java.util.ArrayList;
 
-public class ExperimentalGroup {
+public class ExperimentalGroup implements Cloneable {
 	protected ArrayList<Level> levels = new ArrayList<Level>();
 	private Integer replicate = 0;
 	private String experGroupBrief,experGroupVerbose;
@@ -13,13 +13,16 @@ public class ExperimentalGroup {
 	public ExperimentalGroup(ArrayList<Level> levels){
 		this.levels = levels;
 	}
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+		ExperimentalGroup cloned = (ExperimentalGroup) super.clone();
+		cloned.repChanged = true;
+		cloned.levels = (ArrayList<Level>)cloned.levels.clone();
+		return cloned;
+	}
 
 	public void addLevel(Level level) {
 		levels.add(level);
-	}
-	@SuppressWarnings("unchecked")
-	public ExperimentalGroup clone(){
-		return new ExperimentalGroup((ArrayList<Level>)this.levels.clone());
 	}
 	public String toString(){
 		return toBrief();

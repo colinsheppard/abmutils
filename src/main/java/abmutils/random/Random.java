@@ -3,23 +3,15 @@ package abmutils.random;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
-import org.apache.logging.log4j.*;
 import org.uncommons.maths.random.*;
 
 //TODO Make this faster by adding the generators to hashtables keyed by the parameters so we don't have to recreate the generator over and over again
 
 public class Random {
-	static final Logger log = LogManager.getLogger(Random.class.getName());
-	
-	private static Random instance = null;
-	private static MersenneTwisterRNG rng = new MersenneTwisterRNG();
-	private static DiscreteUniformGenerator fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
+	private MersenneTwisterRNG rng = new MersenneTwisterRNG();
+	private DiscreteUniformGenerator fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
 
-	public static Random getInstance(){ 
-		if(instance == null){
-			instance = new Random();
-		}
-		return (instance);
+	public Random (){ 
 	}
 	public void setSeed(Long seed){
 		byte[] byteSeed = ByteBuffer.allocate(16).putLong(seed).array();
@@ -55,7 +47,7 @@ public class Random {
 		return new TriangleGenerator(min,peak,max,rng);
 	}
 	public Boolean drawFiftyFifty(){
-		return Random.fiftyFifty.nextValue() == 1;
+		return this.fiftyFifty.nextValue() == 1;
 	}
 	public Integer drawRandomIndexFromArray(@SuppressWarnings("rawtypes") ArrayList array){
 		return this.randomInt(0, array.size()-1).nextValue();

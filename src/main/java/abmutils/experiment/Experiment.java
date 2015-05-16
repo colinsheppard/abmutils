@@ -119,7 +119,10 @@ public class Experiment {
 		Integer baseSeed = baseParams.get("Seed").valueInt;
 		
 		for(ExperimentalGroup experimentalGroup : experimentalGroups){
-			LinkedHashMap<String, ParameterValue> runParams = (LinkedHashMap<String, ParameterValue>) baseParams.clone();
+			LinkedHashMap<String, ParameterValue> runParams = new LinkedHashMap<String, ParameterValue>();
+			for(String key : baseParams.keySet()){
+				runParams.put(key, (ParameterValue)baseParams.get(key).clone());
+			}
 			for(Level level : experimentalGroup.levels){
 				for(ParameterValue paramValue : level.values){
 					runParams.remove(paramValue.parameter.name);
@@ -127,11 +130,13 @@ public class Experiment {
 				}
 			}
 			for (int i = 0; i < this.replicates; i++) {
-				experimentalGroup.setReplicate(i);
+				LinkedHashMap<String, ParameterValue> runParamsWithRep = (LinkedHashMap<String, ParameterValue>) runParams.clone();
+				ExperimentalGroup experimentalGroupWithRep = (ExperimentalGroup) experimentalGroup.clone();
+				experimentalGroupWithRep.setReplicate(i);
 				Object modelRun = null;
 				if(baseSeed != 0){
-					runParams.remove("Seed");
-					runParams.put("Seed",new ParameterValue(baseParams.get("Seed").parameter, (new Integer(baseSeed * (i+1))).toString()));
+					runParamsWithRep.remove("Seed");
+					runParamsWithRep.put("Seed",new ParameterValue(baseParams.get("Seed").parameter, (new Integer(baseSeed * (i+1))).toString()));
 				}
 				try {
 		            modelRun = modelRunClass.newInstance();
@@ -140,14 +145,14 @@ public class Experiment {
 		        } catch (IllegalAccessException ex) {
 		            log.error(ex);
 		        }
-				((Model)modelRun).setParameters(runParams);
-				((Model)modelRun).setExperimentalGroup(experimentalGroup);
+				((Model)modelRun).setParameters(runParamsWithRep);
+				((Model)modelRun).setExperimentalGroup(experimentalGroupWithRep);
 				executer.execute((Runnable) modelRun);
 			}
 		}
 		executer.shutdown();
 	}
-	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups){
+	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups) throws CloneNotSupportedException{
 		// Initialize "workingGroup" which will be a row of levels
 		ExperimentalGroup workingGroup = new ExperimentalGroup();
 		for(int i = 0; i < this.factors.size(); i++){
@@ -159,9 +164,9 @@ public class Experiment {
 	// working group and then passes off to the next factor or it adds the final ExperimentalGroup to
 	// levelGroups when all factors have been visited
 	@SuppressWarnings("unchecked")
-	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups, ExperimentalGroup workingGroup, Integer factorIndex){
+	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups, ExperimentalGroup workingGroup, Integer factorIndex) throws CloneNotSupportedException{
 		if(factorIndex >= this.factors.size()){
-			levelGroups.add(workingGroup.clone());
+			levelGroups.add((ExperimentalGroup)workingGroup.clone());
 			return;
 		}
 		for(int i = 0; i < this.factors.get(factorIndex).levels.size(); i++){
@@ -174,5 +179,4 @@ public class Experiment {
 	public String toString(){
 		return "Experiment:"+this.title+" = " + this.factors.toString();
 	}
-
 }

@@ -10,7 +10,7 @@ import abmutils.experiment.Parameter.ValidationCode;
 
 import org.apache.logging.log4j.*;
 
-public class ParameterValue {
+public class ParameterValue implements Cloneable{
 	private static final Logger log = LogManager.getLogger(ParameterValue.class.getName());
 	
 	public File		valueFile;
@@ -28,6 +28,11 @@ public class ParameterValue {
 		value = value.trim();
 		validateParam(value);
 		setValue(value);
+	}
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+		ParameterValue cloned = (ParameterValue) super.clone();
+		return cloned;
 	}
 	
 	public void setValue(String value) throws ParseException{
