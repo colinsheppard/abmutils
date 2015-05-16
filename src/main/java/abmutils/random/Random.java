@@ -24,6 +24,11 @@ public class Random {
 	public void setSeed(Long seed){
 		byte[] byteSeed = ByteBuffer.allocate(16).putLong(seed).array();
 		rng = new MersenneTwisterRNG(byteSeed);
+		// We should also seed the beta generator which uses it's own Mersenne Twister
+		// we draw a psuedo-random number from rng to avoid both generators starting in the exact same location
+		new BetaGenerator(1.0, 1.0, rng.nextInt());
+		// I'm naive and paranoid and suspicious that we need a new generator here
+		fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
 	}
 	public ExponentialGenerator exponential(Double rate){
 		return new ExponentialGenerator(rate,rng);

@@ -15,8 +15,15 @@ public class BetaGenerator {
 		return new BetaGenerator(meanProb*(meanProb*(1-meanProb)/varProb - 1.0), (1-meanProb)*(meanProb*(1-meanProb)/varProb - 1));
 	}
 	public BetaGenerator(Double a, Double b){
+		this(a, b, null);
+	}
+	public BetaGenerator(Double a, Double b,Integer seed){
 		if(BetaGenerator.rng == null){
-			BetaGenerator.rng = new cern.jet.random.engine.MersenneTwister();
+			if(seed==null){
+				BetaGenerator.rng = new cern.jet.random.engine.MersenneTwister();
+			}else{
+				BetaGenerator.rng = new cern.jet.random.engine.MersenneTwister(seed);
+			}
 		}
 		this.betaDist = new Beta(a,b,rng);
 	}
