@@ -9,6 +9,9 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.*;
 import org.yaml.snakeyaml.Yaml;
@@ -26,11 +29,13 @@ public class Experiment {
 	protected ArrayList<Factor> factors = new ArrayList<Factor>();
 	protected LinkedHashMap<String, ParameterValue> baseParams = new LinkedHashMap <String, ParameterValue>();
 	protected Map<String,Object> exp;
+	protected static ExecutorService executer = null;
 	
 	public Experiment(File parameterDefinitionFile, String experimentConfigurationFile) throws Exception,FileNotFoundException{
 		try {
 			this.loadParameterDefinitions(parameterDefinitionFile);
 			this.loadExperiment(experimentConfigurationFile);
+			Experiment.executer = Executors.newFixedThreadPool(this.baseParams.get("NumThreads").valueInt);
 		} catch (FileNotFoundException e) {
 			log.error(e);
 			e.printStackTrace();
@@ -121,7 +126,6 @@ public class Experiment {
 					runParams.put(paramValue.parameter.name,paramValue);
 				}
 			}
-			Global.getInstance().setExperimentGroup(experimentalGroup);
 			for (int i = 0; i < this.replicates; i++) {
 				experimentalGroup.setReplicate(i);
 				Object modelRun = null;
@@ -136,13 +140,12 @@ public class Experiment {
 		        } catch (IllegalAccessException ex) {
 		            log.error(ex);
 		        }
-				Global.getInstance().setParams(runParams);
 				((Model)modelRun).setParameters(runParams);
 				((Model)modelRun).setExperimentalGroup(experimentalGroup);
-				((Model)modelRun).initialize();
-				((Model)modelRun).run();
+				executer.execute((Runnable) modelRun);
 			}
 		}
+		executer.shutdown();
 	}
 	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups){
 		// Initialize "workingGroup" which will be a row of levels

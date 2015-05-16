@@ -11,10 +11,8 @@ public abstract class Global {
 	public static Global instance = null;
 	public File experimentDirectory = null;
 	public File inputsDirectory = null,outputsDirectory = null;
-	public LinkedHashMap<String, ParameterValue> baseParams, params;
+	public LinkedHashMap<String, ParameterValue> baseParams;
 	public LinkedHashMap<String, Parameter> parameterDefinitions;
-	public Schedule schedule = new Schedule();
-	public ExperimentalGroup experimentalGroup;
 
 	public LinkedHashMap<String, Parameter> getParameterDefinitions() {
 		return parameterDefinitions;
@@ -27,12 +25,6 @@ public abstract class Global {
 	}
 	public LinkedHashMap<String, ParameterValue> getBaseParams() {
 		return baseParams;
-	}
-	public void setParams(LinkedHashMap<String, ParameterValue> params) {
-		this.params = params;
-	}
-	public LinkedHashMap<String, ParameterValue> getParams() {
-		return params;
 	}
 	public File findFile(File tempfile) throws FileNotFoundException{
 		if(tempfile.exists())return tempfile;
@@ -67,17 +59,5 @@ public abstract class Global {
 		return (instance);
 	}
 	protected Global() {
-	}
-	public void setSchedule(Schedule schedule) {
-		this.schedule = schedule;
-	}
-	public Schedule getSchedule() {
-		return this.schedule;
-	}
-	public Double getTick(){
-		return this.schedule.getTick();
-	}
-	public void setExperimentGroup(ExperimentalGroup experimentalGroup) {
-		this.experimentalGroup = experimentalGroup;
 	}
 }

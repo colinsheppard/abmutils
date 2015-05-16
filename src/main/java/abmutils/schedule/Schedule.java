@@ -7,16 +7,30 @@ import java.util.TreeSet;
 
 
 
+
+
+
+
 // LOGGING
 import org.apache.logging.log4j.*;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class Schedule {
 	static final Logger log = LogManager.getLogger(Schedule.class.getName());
 	
-	private EventComparator comparator = new EventComparator();
+	private static EventComparator comparator = new EventComparator();
 	private TreeSet<Event> scheduleTree = new TreeSet<Event>(comparator);
 	private Long nextEventID = 0L;
 	private Double tick = 0.0;
+	private LocalDate dateAtTickZero = LocalDate.parse("0000-01-01"); // Initialize to unrealistic date
+	private Long tickAsLong = null;
+	private String tickAsDateString = null;
+	private LocalDate tickAsLocalDate = null;
+	private Boolean tickChanged = true;
+	private static DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 	
 	public void addEvent(Object agent, String methodStr, Double eventTick, Double priority) throws Exception{
 		if(eventTick < tick)throw new Exception("Attempted to create an event in the past (tick "+eventTick+") but present moment is tick "+tick);
@@ -93,5 +107,43 @@ public class Schedule {
 	}
 	public Double getTick(){
 		return tick;
+	}
+	public String getTickAsDateString(){
+		if(tickChanged){
+			this.tickChanged = false;
+			updateTickFormats();
+		}
+		return this.tickAsDateString;
+	}
+	public LocalDate getTickAsDate(){
+		if(tickChanged){
+			this.tickChanged = false;
+			updateTickFormats();
+		}
+		return this.tickAsLocalDate;
+	}
+	public Long getTickAsLong(){
+		if(tickChanged){
+			this.tickChanged = false;
+			updateTickFormats();
+		}
+		return this.tickAsLong;
+	}
+	public void updateTickFormats(){
+		this.tickAsLocalDate = this.dateAtTickZero.plusDays(this.tick.intValue());
+		this.tickAsLong = this.tickAsLocalDate.toDate().getTime();
+		this.tickAsDateString = this.tickAsLocalDate.toString(dateFormatter);
+	}
+	public void setTickChangedToTrue(){
+		this.tickChanged = true;
+	}
+	public void anchorToTick(LocalDate dateAtTickZero){
+		this.dateAtTickZero = dateAtTickZero;
+	}
+	public static DateTimeFormatter getDateFormatter(){
+		return Schedule.dateFormatter;
+	}
+	public Double convertDateToTick(String dateStr){
+		return new Double(Days.daysBetween(dateAtTickZero, LocalDate.parse(dateStr)).getDays());
 	}
 }
