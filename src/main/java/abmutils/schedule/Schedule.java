@@ -5,12 +5,6 @@ import java.lang.reflect.Method;
 import java.util.TreeSet;
 
 
-
-
-
-
-
-
 // LOGGING
 import org.apache.logging.log4j.*;
 import org.joda.time.Days;
@@ -18,10 +12,12 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import abmutils.entities.Entity;
+
 public class Schedule {
 	static final Logger log = LogManager.getLogger(Schedule.class.getName());
 	
-	private static EventComparator comparator = new EventComparator();
+	public static EventComparator comparator = new EventComparator();
 	private TreeSet<Event> scheduleTree = new TreeSet<Event>(comparator);
 	private Long nextEventID = 0L;
 	private Double tick = 0.0;
@@ -32,11 +28,11 @@ public class Schedule {
 	private Boolean tickChanged = true;
 	private static DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 	
-	public void addEvent(Object agent, String methodStr, Double eventTick, Double priority) throws Exception{
+	public void addEvent(Entity agent, String methodStr, Double eventTick, Double priority) throws Exception{
 		if(eventTick < tick)throw new Exception("Attempted to create an event in the past (tick "+eventTick+") but present moment is tick "+tick);
 		Method method = null;
 		try {
-			Class<? extends Object> class1 = agent.getClass();
+			Class<? extends Entity> class1 = agent.getClass();
 			method = class1.getMethod(methodStr);
 		} catch (SecurityException e) {
 			log.error(e);
@@ -45,6 +41,7 @@ public class Schedule {
 		}
 		Event event = new Event(nextEventID++,agent,method,eventTick,priority);
 		scheduleTree.add(event);
+		agent.addEvent(event);
 	}
 	public void performScheduledTasks() throws Throwable{
 		performScheduledTasks(Double.MAX_VALUE);
@@ -70,6 +67,7 @@ public class Schedule {
 
 			// Remove the current event as is from the schedule
 			scheduleTree.remove(event);
+			event.agent.removeEvent(event);
 
 			// Reschedule the event if necessary
 //			event.reschedule();
@@ -100,6 +98,9 @@ public class Schedule {
 		return buf.toString();
 	}
 	public void clear() {
+		for(Event event : scheduleTree){
+			event.agent.clearMySchedule();
+		}
 		scheduleTree.clear();
 	}
 	public void resetTicks() {
@@ -145,5 +146,8 @@ public class Schedule {
 	}
 	public Double convertDateToTick(String dateStr){
 		return new Double(Days.daysBetween(dateAtTickZero, LocalDate.parse(dateStr)).getDays());
+	}
+	public void removeEvent(Event event) {
+		this.scheduleTree.remove(event);
 	}
 }
