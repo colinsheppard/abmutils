@@ -2,7 +2,9 @@ package abmutils.tests;
 
 import org.apache.logging.log4j.*;
 
-public class TestAgent {
+import abmutils.entities.Entity;
+
+public class TestAgent extends Entity{
 	static final Logger log = LogManager.getLogger(TestAgent.class.getName());
 	public TestAgent(){
 		
@@ -12,5 +14,8 @@ public class TestAgent {
 	}
 	public void sayHello(){
 		log.info("hello");
+	}
+	@Override
+	protected void dieActions() {
 	}
 }
