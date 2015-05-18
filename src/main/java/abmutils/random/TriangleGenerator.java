@@ -11,7 +11,7 @@ public class TriangleGenerator {
 		this.a = min;
 		this.b = peak;
 		this.c = max;
-		this.rng = rng;
+		TriangleGenerator.rng = rng;
 		if(this.a > this.b || this.a > this.c || this.b > this.c)throw new RuntimeException("Inconsistent parameters to triangle disbribution, min="+this.a+" peak="+this.b+" max="+this.c);
 		initConstants();
 	}
@@ -24,7 +24,7 @@ public class TriangleGenerator {
 	}
 	public Double nextValue(){
 		Double result;
-		Double draw = this.rng.nextDouble();
+		Double draw = TriangleGenerator.rng.nextDouble();
 		if(draw <= ALeft){
 			Double d = Math.sqrt( (fLeft + 2*h*draw)/(b-a) );
 			result = (a*h/(b-a) + d)*(b-a)/h;

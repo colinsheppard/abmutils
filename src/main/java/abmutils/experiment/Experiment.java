@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -163,7 +162,6 @@ public class Experiment {
 	// combinationsOfLevels is a recursive method which replaces the appropriate element in 
 	// working group and then passes off to the next factor or it adds the final ExperimentalGroup to
 	// levelGroups when all factors have been visited
-	@SuppressWarnings("unchecked")
 	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups, ExperimentalGroup workingGroup, Integer factorIndex) throws CloneNotSupportedException{
 		if(factorIndex >= this.factors.size()){
 			levelGroups.add((ExperimentalGroup)workingGroup.clone());

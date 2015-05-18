@@ -2,10 +2,11 @@ package abmutils.experiment;
 
 import java.util.LinkedHashMap;
 
+import abmutils.entities.Entity;
 import abmutils.experiment.ParameterValue;
 import abmutils.schedule.Schedule;
 
-public abstract class Model implements Runnable {
+public abstract class Model extends Entity implements Runnable {
 	public LinkedHashMap<String, ParameterValue> parameters;
 	public ExperimentalGroup experimentalGroup;
 	public Schedule schedule = new Schedule();
@@ -19,7 +20,6 @@ public abstract class Model implements Runnable {
 		this.experimentalGroup = experimentalGroup;
 	}
 	public abstract void initialize();
-	@Override
 	public abstract void run();
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
