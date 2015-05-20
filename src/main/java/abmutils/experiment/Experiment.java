@@ -23,7 +23,7 @@ import abmutils.processing.data.Table;
 public class Experiment {
 	protected static final Logger log = LogManager.getLogger(Experiment.class.getName());
 	protected String title, author;
-	protected Integer replicates; 
+	protected int replicates; 
 	protected File experimentFile; 
 	protected ArrayList<Factor> factors = new ArrayList<Factor>();
 	protected LinkedHashMap<String, ParameterValue> baseParams = new LinkedHashMap <String, ParameterValue>();
@@ -54,14 +54,14 @@ public class Experiment {
 		LinkedHashMap<String, Parameter> parameterDefinitions = new LinkedHashMap<String, Parameter>();
 		Table paramData = InputOutput.readTable(parameterDefinitionFile);
 		for (int i = 0; i < paramData.getRowCount(); i++) {
-			Parameter newParam = new Parameter(paramData.getString(i,"Name"), 
+			Parameter newParam = new Parameter(paramData.getString(i,"Name").trim(), 
 					paramData.getString(i, "DefaultValue"),
 					paramData.getString(i, "Title"),
 					paramData.getString(i, "DataType"),
 					paramData.getString(i, "DisplayOrder"),
 					paramData.getString(i, "LowerBound"),
 					paramData.getString(i, "UpperBound"));
-			parameterDefinitions.put(paramData.getString(i,"Name"),newParam);
+			parameterDefinitions.put(paramData.getString(i,"Name").trim(),newParam);
 		}
 		Global.getInstance().setParameterDefinitions(parameterDefinitions);
 	}
@@ -77,7 +77,7 @@ public class Experiment {
 		// Assign experiment properties and setup inputs/outputs directory paths
 		this.title = (String)exp.get("Title");
 		this.author = (String)exp.get("Author");
-		this.replicates = (Integer)exp.get("Replicates");
+		this.replicates = (int)exp.get("Replicates");
 		String inputsDirectoryPath = (String)exp.get("InputsDirectory");
 		File inputsDirectory = new File(inputsDirectoryPath);
 		String outputsDirectoryPath = (String)exp.get("OutputsDirectory");
@@ -115,7 +115,7 @@ public class Experiment {
 		ArrayList<ExperimentalGroup> experimentalGroups = new ArrayList<ExperimentalGroup>();
 		combinationsOfLevels(experimentalGroups);
 		
-		Integer baseSeed = baseParams.get("Seed").valueInt;
+		int baseSeed = baseParams.get("Seed").valueInt;
 		
 		for(ExperimentalGroup experimentalGroup : experimentalGroups){
 			LinkedHashMap<String, ParameterValue> runParams = new LinkedHashMap<String, ParameterValue>();
@@ -162,13 +162,13 @@ public class Experiment {
 	// combinationsOfLevels is a recursive method which replaces the appropriate element in 
 	// working group and then passes off to the next factor or it adds the final ExperimentalGroup to
 	// levelGroups when all factors have been visited
-	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups, ExperimentalGroup workingGroup, Integer factorIndex) throws CloneNotSupportedException{
+	public void combinationsOfLevels(ArrayList<ExperimentalGroup> levelGroups, ExperimentalGroup workingGroup, int factorIndex) throws CloneNotSupportedException{
 		if(factorIndex >= this.factors.size()){
 			levelGroups.add((ExperimentalGroup)workingGroup.clone());
 			return;
 		}
 		for(int i = 0; i < this.factors.get(factorIndex).levels.size(); i++){
-			workingGroup.levels.remove(factorIndex.intValue());
+			workingGroup.levels.remove(factorIndex);
 			workingGroup.levels.add(factorIndex,this.factors.get(factorIndex).levels.get(i));
 			combinationsOfLevels(levelGroups, workingGroup, factorIndex + 1);
 		}

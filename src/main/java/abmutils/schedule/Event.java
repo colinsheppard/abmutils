@@ -6,13 +6,13 @@ import abmutils.entities.Entity;
 
 public class Event {
 
-	Long id;
-	Double tick;
-	Double priority;
+	long id;
+	double tick;
+	double priority;
 	Entity agent;
 	Method method;
 	
-	public Event(Long id, Entity agent, Method method,Double tick, Double priority) {
+	public Event(long id, Entity agent, Method method,double tick, double priority) {
 		this.id = id;
 		this.tick = tick;
 		this.priority = priority;

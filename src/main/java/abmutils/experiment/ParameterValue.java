@@ -16,7 +16,7 @@ public class ParameterValue implements Cloneable{
 	public File		valueFile;
 	public Integer 	valueInt;
 	public Double	valueDbl;
-	public Boolean	valueBoo;
+	public boolean	valueBoo;
 	public String	valueStr;
 	public Date		valueDat;
 	public Date		valueDay;
@@ -100,7 +100,7 @@ public class ParameterValue implements Cloneable{
 		String result = "Value:";
 		switch(this.parameter.type){
 			case DOUBLE:
-				result += this.valueDbl.toString();
+				result += this.valueDbl;
 				break;
 			case STRING:
 				result += this.valueStr.toString();
@@ -110,10 +110,10 @@ public class ParameterValue implements Cloneable{
 				result += this.valueFile.toString();
 				break;
 			case BOOL:
-				result += this.valueBoo.toString();
+				result += this.valueBoo;
 				break;
 			case INTEGER:
-				result += this.valueInt.toString();
+				result += this.valueInt;
 				break;
 			case DATE:
 				result += this.valueDat.toString();

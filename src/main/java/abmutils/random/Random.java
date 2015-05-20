@@ -43,6 +43,9 @@ public class Random {
 	public GaussianGenerator gaussian(Double mean,Double stDev){
 		return new GaussianGenerator(mean,stDev,rng);
 	}
+	public TriangleGenerator triangle(int min, int peak, int max){
+		return new TriangleGenerator((new Integer(min)).doubleValue(),(new Integer(peak)).doubleValue(),(new Integer(max)).doubleValue(),rng);
+	}
 	public TriangleGenerator triangle(Double min, Double peak, Double max){
 		return new TriangleGenerator(min,peak,max,rng);
 	}

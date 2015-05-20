@@ -19,16 +19,16 @@ public class Schedule {
 	
 	public static EventComparator comparator = new EventComparator();
 	private TreeSet<Event> scheduleTree = new TreeSet<Event>(comparator);
-	private Long nextEventID = 0L;
-	private Double tick = 0.0;
+	private long nextEventID = 0L;
+	private double tick = 0.0;
 	private LocalDate dateAtTickZero = LocalDate.parse("0000-01-01"); // Initialize to unrealistic date
-	private Long tickAsLong = null;
+	private long tickAsLong;
 	private String tickAsDateString = null;
 	private LocalDate tickAsLocalDate = null;
-	private Boolean tickChanged = true;
+	private boolean tickChanged = true;
 	private static DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 	
-	public void addEvent(Entity agent, String methodStr, Double eventTick, Double priority) throws Exception{
+	public void addEvent(Entity agent, String methodStr, double eventTick, double priority) throws Exception{
 		if(eventTick < tick)throw new Exception("Attempted to create an event in the past (tick "+eventTick+") but present moment is tick "+tick);
 		Method method = null;
 		try {
@@ -42,11 +42,12 @@ public class Schedule {
 		Event event = new Event(nextEventID++,agent,method,eventTick,priority);
 		scheduleTree.add(event);
 		agent.addEvent(event);
+		agent.setMasterSchedule(this);
 	}
 	public void performScheduledTasks() throws Throwable{
 		performScheduledTasks(Double.MAX_VALUE);
 	}	
-	public void performScheduledTasks(Double untilTick) throws Throwable{ 
+	public void performScheduledTasks(double untilTick) throws Throwable{ 
 		Event event = scheduleTree.isEmpty() ? null : scheduleTree.first();
 		while(event != null && event.tick <= untilTick){
 			if(log.isTraceEnabled())log.trace("performing event-id: "+event.id+" for agent: "+event.agent+" at tick:"+event.tick+" and priority:"+event.priority);
@@ -106,7 +107,7 @@ public class Schedule {
 	public void resetTicks() {
 		tick = 0.0;
 	}
-	public Double getTick(){
+	public double getTick(){
 		return tick;
 	}
 	public String getTickAsDateString(){
@@ -131,7 +132,7 @@ public class Schedule {
 		return this.tickAsLong;
 	}
 	public void updateTickFormats(){
-		this.tickAsLocalDate = this.dateAtTickZero.plusDays(this.tick.intValue());
+		this.tickAsLocalDate = this.dateAtTickZero.plusDays((new Double(this.tick)).intValue());
 		this.tickAsLong = this.tickAsLocalDate.toDate().getTime();
 		this.tickAsDateString = this.tickAsLocalDate.toString(dateFormatter);
 	}
@@ -144,7 +145,7 @@ public class Schedule {
 	public static DateTimeFormatter getDateFormatter(){
 		return Schedule.dateFormatter;
 	}
-	public Double convertDateToTick(String dateStr){
+	public double convertDateToTick(String dateStr){
 		return new Double(Days.daysBetween(dateAtTickZero, LocalDate.parse(dateStr)).getDays());
 	}
 	public void removeEvent(Event event) {

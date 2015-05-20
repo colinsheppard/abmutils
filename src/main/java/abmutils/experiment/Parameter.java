@@ -16,13 +16,13 @@ public class Parameter {
 	public DataType type;
 	public String rangeLow;
 	public String rangeHigh;
-	public Double dLow;
-	public Double dHigh;
-	public Integer iLow;
-	public Integer iHigh;
-	public Integer stringLow;
-	public Integer stringHigh;
-	public Integer displayOrder;
+	public double dLow;
+	public double dHigh;
+	public int iLow;
+	public int iHigh;
+	public int stringLow;
+	public int stringHigh;
+	public int displayOrder;
 
 	public Parameter(String paramName,String defaultValue,String variableTitle,String dataType,String displayOrder, String rangeLow, String rangeHigh){
 		this.name = paramName;
