@@ -10,17 +10,22 @@ import org.uncommons.maths.random.*;
 public class Random {
 	private MersenneTwisterRNG rng = new MersenneTwisterRNG();
 	private DiscreteUniformGenerator fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
+	private Long seed = 0L;
 
 	public Random (){ 
 	}
 	public void setSeed(Long seed){
+		this.seed = seed;
 		byte[] byteSeed = ByteBuffer.allocate(16).putLong(seed).array();
-		rng = new MersenneTwisterRNG(byteSeed);
-		// We should also seed the beta generator which uses it's own Mersenne Twister
-		// we draw a psuedo-random number from rng to avoid both generators starting in the exact same location
-		new BetaGenerator(1.0, 1.0, rng.nextInt());
+		this.rng = new MersenneTwisterRNG(byteSeed);
 		// I'm naive and paranoid and suspicious that we need a new generator here
-		fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
+		this.fiftyFifty = new DiscreteUniformGenerator(0, 1, this.rng);
+	}
+	public BetaGenerator beta(double a, double b){
+		return new BetaGenerator(a, b, this.seed.intValue());
+	}
+	public BetaGenerator betaFromMeanAndSD(double meanProb, double sdProb){
+		return BetaGenerator.BetaGeneratorFromMeanAndSD(meanProb, sdProb, this.seed.intValue());
 	}
 	public ExponentialGenerator exponential(Double rate){
 		return new ExponentialGenerator(rate,rng);

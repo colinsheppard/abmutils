@@ -23,11 +23,13 @@ public class Level {
 		this.factor = factor;
 		this.title = (String)level.get("Title");
 		this.code = (String)level.get("Code");
-		for(LinkedHashMap<String, Object> param : (ArrayList<LinkedHashMap<String, Object>>)level.get("Params")){
-			String paramName = (String)param.keySet().toArray()[0]; 
-			Parameter theParam = Global.getInstance().getParameterDefinitions().get(paramName);
-			if(theParam == null)throw new Exception("Undefined parameter '"+paramName+"' see TernPOP/src/ternpop/resources/parameterDefinitions.csv for valid parameter names.");
-			this.values.add(new ParameterValue(theParam, param.get(paramName).toString()));
+		if(level.get("Params")!=null){
+			for(LinkedHashMap<String, Object> param : (ArrayList<LinkedHashMap<String, Object>>)level.get("Params")){
+				String paramName = (String)param.keySet().toArray()[0]; 
+				Parameter theParam = Global.getInstance().getParameterDefinitions().get(paramName);
+				if(theParam == null)throw new Exception("Undefined parameter '"+paramName+"' see TernPOP/src/ternpop/resources/parameterDefinitions.csv for valid parameter names.");
+				this.values.add(new ParameterValue(theParam, param.get(paramName).toString()));
+			}
 		}
 	}
 	public String toString(){
