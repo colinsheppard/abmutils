@@ -1,7 +1,7 @@
 package abmutils.random;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
+import java.util.Collection;
 
 import org.uncommons.maths.random.*;
 
@@ -57,7 +57,7 @@ public class Random {
 	public Boolean drawFiftyFifty(){
 		return this.fiftyFifty.nextValue() == 1;
 	}
-	public Integer drawRandomIndexFromArray(@SuppressWarnings("rawtypes") ArrayList array){
-		return this.randomInt(0, array.size()-1).nextValue();
+	public Integer drawRandomIndexFromCollection(@SuppressWarnings("rawtypes") Collection set){
+		return this.randomInt(0, set.size()-1).nextValue();
 	}
 }
