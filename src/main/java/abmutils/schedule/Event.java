@@ -19,7 +19,10 @@ public class Event {
 		this.agent = agent;
 		this.method = method;
 	}
-	
+	public String toString(){
+//		return this.tick + ": " + this.agent + " --> " + this.method.getName();
+		return this.tick + "(" + this.priority + ") " + this.method.getName();
+	}
 	public String dump(){
 		return this.toString();
 	}
