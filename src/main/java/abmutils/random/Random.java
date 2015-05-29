@@ -10,6 +10,7 @@ import org.uncommons.maths.random.*;
 public class Random {
 	private MersenneTwisterRNG rng = new MersenneTwisterRNG();
 	private DiscreteUniformGenerator fiftyFifty = new DiscreteUniformGenerator(0, 1, rng);
+	public ContinuousUniformGenerator simpleRand = uniform();
 	private Long seed = 0L;
 
 	public Random (){ 
@@ -20,6 +21,7 @@ public class Random {
 		this.rng = new MersenneTwisterRNG(byteSeed);
 		// I'm naive and paranoid and suspicious that we need a new generator here
 		this.fiftyFifty = new DiscreteUniformGenerator(0, 1, this.rng);
+		this.simpleRand = new ContinuousUniformGenerator(0.0, 1.0, this.rng);
 	}
 	public BetaGenerator beta(double a, double b){
 		return new BetaGenerator(a, b, this.seed.intValue());
@@ -59,5 +61,8 @@ public class Random {
 	}
 	public Integer drawRandomIndexFromCollection(@SuppressWarnings("rawtypes") Collection set){
 		return this.randomInt(0, set.size()-1).nextValue();
+	}
+	public Double drawSimpleRand(){
+		return this.simpleRand.nextValue();
 	}
 }
