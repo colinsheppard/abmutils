@@ -89,9 +89,23 @@ public class Experiment {
 		if(!outputsDirectory.exists())outputsDirectory = new File(Global.getInstance().getExperimentDirectory().getAbsolutePath()+"/"+outputsDirectoryPath);
 		Global.getInstance().setOutputsDirectory(outputsDirectory);
 		
-		// Build the list of factors
-		for(LinkedHashMap<String, Object> factor : (ArrayList<LinkedHashMap<String,Object>>)exp.get("Factors")){
-			factors.add(new Factor(factor));
+		// Build the list of factors, creating a default if none specified
+		if(exp.get("Factors") == null){
+			LinkedHashMap<String, Object> defaultFactor = new LinkedHashMap<String, Object>();
+			LinkedHashMap<String, Object> defaultLevel = new LinkedHashMap<String, Object>();
+			ArrayList<Object> defaultLevels = new ArrayList<Object>();
+			defaultLevel.put("Title", "NA");
+			defaultLevel.put("Code", "NA");
+			defaultLevel.put("Params", null);
+			defaultLevels.add(defaultLevel);
+			defaultFactor.put("Title", "NA");
+			defaultFactor.put("Code", "NA");
+			defaultFactor.put("Levels", defaultLevels);
+			factors.add(new Factor(defaultFactor));
+		}else{
+			for(LinkedHashMap<String, Object> factor : (ArrayList<LinkedHashMap<String,Object>>)exp.get("Factors")){
+				factors.add(new Factor(factor));
+			}
 		}
 
 		// Initialize our baseline hash of parameter values
@@ -172,7 +186,6 @@ public class Experiment {
 			workingGroup.levels.add(factorIndex,this.factors.get(factorIndex).levels.get(i));
 			combinationsOfLevels(levelGroups, workingGroup, factorIndex + 1);
 		}
-		
 	}
 	public String toString(){
 		return "Experiment:"+this.title+" = " + this.factors.toString();
