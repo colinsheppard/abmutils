@@ -33,6 +33,12 @@ public abstract class Entity {
 	public void removeEvent(Event event){
 		mySchedule.remove(event);
 	}
+	public boolean hasEvents(){
+		return mySchedule.size() > 0;
+	}
+	public Event getNextEvent(){
+		return mySchedule.first();
+	}
 	public void clearMySchedule(){
 		for(Event event : mySchedule){
 			masterSchedule.removeEvent(event);

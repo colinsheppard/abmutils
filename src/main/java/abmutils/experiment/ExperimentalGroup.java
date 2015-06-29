@@ -13,6 +13,7 @@ public class ExperimentalGroup implements Cloneable {
 	public ExperimentalGroup(ArrayList<Level> levels){
 		this.levels = levels;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
     protected Object clone() throws CloneNotSupportedException {
 		ExperimentalGroup cloned = (ExperimentalGroup) super.clone();

@@ -23,6 +23,12 @@ public class Event {
 //		return this.tick + ": " + this.agent + " --> " + this.method.getName();
 		return this.tick + "(" + this.priority + ") " + this.method.getName();
 	}
+	public double getEventTick(){
+		return this.tick;
+	}
+	public String getMethodName(){
+		return this.method.getName();
+	}
 	public String dump(){
 		return this.toString();
 	}

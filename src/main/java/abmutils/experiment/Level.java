@@ -19,6 +19,7 @@ public class Level {
 	public void addValue(ParameterValue value){
 		this.values.add(value);
 	}
+	@SuppressWarnings("unchecked")
 	public Level(Factor factor, LinkedHashMap<String, Object> level) throws Exception {
 		this.factor = factor;
 		this.title = (String)level.get("Title");
