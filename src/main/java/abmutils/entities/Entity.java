@@ -2,9 +2,10 @@ package abmutils.entities;
 
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import abmutils.schedule.*;
 
-public abstract class Entity {
+public abstract class Entity implements Cloneable{
 	public static AtomicInteger atomicID = new AtomicInteger();
 	public int id;
 	private Schedule masterSchedule;
@@ -13,6 +14,12 @@ public abstract class Entity {
 	public Entity() {
 		id = atomicID.addAndGet(1);
 	}
+	@Override
+    protected Object clone() throws CloneNotSupportedException {
+		Entity cloned = (Entity) super.clone();
+		cloned.mySchedule = new TreeSet<Event>(Schedule.comparator);
+		return cloned;
+    }
 	public final void die(){
 		// to be called from the model when an entity dies
 		clearMySchedule();
@@ -43,6 +50,9 @@ public abstract class Entity {
 		for(Event event : mySchedule){
 			masterSchedule.removeEvent(event);
 		}
+		mySchedule.clear();
+	}
+	public void clearJustMySchedule(){
 		mySchedule.clear();
 	}
 }

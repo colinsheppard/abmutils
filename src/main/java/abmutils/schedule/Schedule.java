@@ -25,7 +25,7 @@ public class Schedule {
 	private long tickAsLong;
 	private String tickAsDateString = null;
 	private LocalDate tickAsLocalDate = null;
-	private boolean tickChanged = true;
+	private boolean tickChanged = true, clearSchedule = false;
 	private static DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 	
 	public void addEvent(Entity agent, String methodStr, double eventTick, double priority) throws Exception{
@@ -70,6 +70,10 @@ public class Schedule {
 			scheduleTree.remove(event);
 			event.agent.removeEvent(event);
 
+			if(clearSchedule){
+				this.clear();
+				this.clearSchedule = false;
+			}
 			// Reschedule the event if necessary
 //			event.reschedule();
 
@@ -98,9 +102,12 @@ public class Schedule {
 		}
 		return buf.toString();
 	}
+	public void clearAtNextOpportunity() {
+		this.clearSchedule = true;
+	}
 	public void clear() {
 		for(Event event : scheduleTree){
-			event.agent.clearMySchedule();
+			event.agent.clearJustMySchedule();
 		}
 		scheduleTree.clear();
 	}
