@@ -9,32 +9,18 @@ import java.util.Hashtable;
  * curves and to perform those calculations in an efficient manner.
  */
 public class Logistic {
-	private static Logistic 	instance = null;
-	private static Hashtable<String,Double> 	logistA = new Hashtable<String,Double>();
-	private static Hashtable<String,Double> 	logistB = new Hashtable<String,Double>();
-	private static double 		logistD = Math.log(0.9/0.1);
-	private static double 		logistC = Math.log(0.1/0.9);
-	private static double 		logisticLimiter = 20.0;
+	private Hashtable<String,Double> 	logistA = new Hashtable<String,Double>();
+	private Hashtable<String,Double> 	logistB = new Hashtable<String,Double>();
+	private double 		logistD = Math.log(0.9/0.1);
+	private double 		logistC = Math.log(0.1/0.9);
+	private double 		logisticLimiter = 20.0;
 	
-	/**
-	 * @brief Get instance
-	 *
-	 *	Logistic is implemented as a singleton, public access must occur through the getInstance method.
-	 * 
-	 * @return
-	 */
-	public static Logistic getInstance(){ 
-		if(instance == null){
-			instance = new Logistic();
-		}
-		return (instance);
-	}
 	/**
 	 * @brief Logistic constructor
 	 * 
 	 * Empty constructor, nothing happens.
 	 */
-	protected Logistic(){
+	public Logistic(){
 	}
 	/**
 	 * @brief Set parameters wrapper
