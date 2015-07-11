@@ -1,7 +1,7 @@
 abmutils
 ========
 
-## Simple Agent-Based Modeling Framework for java
+## Simple Headless Agent-Based Modeling Framework for java
 
 This library provides a very simple set of tools useful to developing agent-based models (ABMs).  The most widely used ABM platform for Java is [Repast](http://repast.sourceforge.net/) which I have found cumbersome to use, especially when the models I implement are too complicated or large to have any need for an interactive graphical display of my agents during simulations.
 
@@ -9,8 +9,10 @@ I found my Repast models were only using the scheduling and random number capabi
 
 Features:
 * Scheduler (a discrete event schedule like what is provided in Repast)
+* Experiment mananger (the ability to easily specify multi-factorial experiments with a simple YAML config file)
+* IO (easily load data from CSV into a table)
 * Random number generation (just a wrapper to [Uncommons Maths](http://maths.uncommons.org/))
 
 ## Disclaimer
 
-This library is under development and not even close to a release stage.  But, I'm actively developing an agent-based model (thoroughout 2014 and into 2015) using this library.  I therefore will be adding features and fixing bugs and would welcome others to test it out, submit issues, or contribute.
+This library was developed in association with a major agent-based model I've been working on and is relatively stable. Until I or someone else uses this for a second model, there are probably still some bugs / issues to be worked out. At some point I will add documentation soon on how to use.
