@@ -31,7 +31,7 @@ public abstract class Global {
 		if(tempfile2.exists())return tempfile2;
 		tempfile2 = new File(experimentDirectory.getAbsolutePath() + "/" + tempfile.getPath());
 		if(tempfile2.exists())return tempfile2;
-		throw new FileNotFoundException("Cannot find file "+tempfile.getPath()+" in the ternpop experiment directory or the model inputs directory");
+		throw new FileNotFoundException("Cannot find file "+tempfile.getPath()+" in the ternpop experiment directory ("+experimentDirectory.getAbsolutePath()+") or the model inputs directory ("+inputsDirectory.getAbsolutePath()+")");
 	}
 	public File getInputsDirectory() {
 		return inputsDirectory;
