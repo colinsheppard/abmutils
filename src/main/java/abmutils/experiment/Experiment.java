@@ -94,11 +94,9 @@ public class Experiment {
 			LinkedHashMap<String, Object> defaultFactor = new LinkedHashMap<String, Object>();
 			LinkedHashMap<String, Object> defaultLevel = new LinkedHashMap<String, Object>();
 			ArrayList<Object> defaultLevels = new ArrayList<Object>();
-			defaultLevel.put("Title", "NA");
 			defaultLevel.put("Code", "NA");
 			defaultLevel.put("Params", null);
 			defaultLevels.add(defaultLevel);
-			defaultFactor.put("Title", "NA");
 			defaultFactor.put("Code", "NA");
 			defaultFactor.put("Levels", defaultLevels);
 			factors.add(new Factor(defaultFactor));
@@ -130,6 +128,7 @@ public class Experiment {
 		combinationsOfLevels(experimentalGroups);
 		
 		int baseSeed = baseParams.get("Seed").valueInt;
+		int runID = 1;
 		
 		for(ExperimentalGroup experimentalGroup : experimentalGroups){
 			LinkedHashMap<String, ParameterValue> runParams = new LinkedHashMap<String, ParameterValue>();
@@ -146,6 +145,7 @@ public class Experiment {
 				LinkedHashMap<String, ParameterValue> runParamsWithRep = (LinkedHashMap<String, ParameterValue>) runParams.clone();
 				ExperimentalGroup experimentalGroupWithRep = (ExperimentalGroup) experimentalGroup.clone();
 				experimentalGroupWithRep.setReplicate(i);
+				experimentalGroupWithRep.setRun(runID++);
 				Object modelRun = null;
 				if(baseSeed != 0){
 					runParamsWithRep.remove("Seed");
@@ -186,6 +186,14 @@ public class Experiment {
 			workingGroup.levels.add(factorIndex,this.factors.get(factorIndex).levels.get(i));
 			combinationsOfLevels(levelGroups, workingGroup, factorIndex + 1);
 		}
+	}
+	public String getCSVHeader() {
+		String header = "Run,";
+		for(Factor factor : this.factors){
+			header += factor.code + ",";
+		}
+		header += "Rep";
+		return header;
 	}
 	public String toString(){
 		return "Experiment:"+this.title+" = " + this.factors.toString();
