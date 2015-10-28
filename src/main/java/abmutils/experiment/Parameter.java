@@ -74,6 +74,7 @@ public class Parameter {
 			}
 			break;
 		case INTEGER:
+			value = value.replaceAll("\\.0*$", ""); // remove trailing ".0"
 			if(value.matches("[-]?[0-9]+")){
 				Integer ivalue = Integer.parseInt(value);
 				if(ivalue > this.iHigh){

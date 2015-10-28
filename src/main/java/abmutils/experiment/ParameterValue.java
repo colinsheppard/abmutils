@@ -51,7 +51,7 @@ public class ParameterValue implements Cloneable{
 			this.valueBoo = Boolean.parseBoolean(value);
 			break;
 		case INTEGER:
-			this.valueInt = Integer.parseInt(value);
+			this.valueInt = Integer.parseInt(value.replaceAll("\\.0*$", ""));
 			break;
 		case DATE:
 			this.valueDat = new SimpleDateFormat("yyyy-MM-dd").parse(value);
@@ -63,7 +63,7 @@ public class ParameterValue implements Cloneable{
 	}
 	
 	public void validateParam(String value) throws Exception,FileNotFoundException{
-		ValidationCode validationCode = this.parameter.validate(value);
+		ValidationCode validationCode = this.parameter.validate(value); 
 		switch(validationCode){
 		case UNTESTED:
 			log.warn("Parameter "+parameter.name+" value '"+value+"' could not be validated");
