@@ -187,6 +187,9 @@ public class Experiment {
 			combinationsOfLevels(levelGroups, workingGroup, factorIndex + 1);
 		}
 	}
+	public String getAbbreviatedCSVHeader() {
+		return "Run";
+	}
 	public String getCSVHeader() {
 		String header = "Run,";
 		for(Factor factor : this.factors){

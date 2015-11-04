@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class ExperimentalGroup implements Cloneable {
 	protected ArrayList<Level> levels = new ArrayList<Level>();
 	private int replicate = 0, runID;
-	private String experGroupBrief,experGroupVerbose,experGroupCSV,header;
+	private String experGroupBrief,experGroupVerbose,experGroupCSV,experGroupAbbreviatedCSV,header;
 	private boolean repChanged = true;
 	
 	public ExperimentalGroup() {
@@ -37,6 +37,13 @@ public class ExperimentalGroup implements Cloneable {
 		}
 		return this.header;
 	}
+	public String toAbrreviatedCSV() {
+		if(repChanged){
+			this.repChanged = false;
+			updateGroupStrings();
+		}
+		return this.experGroupAbbreviatedCSV;
+	}
 	public String toCSV() {
 		if(repChanged){
 			this.repChanged = false;
@@ -62,6 +69,7 @@ public class ExperimentalGroup implements Cloneable {
 		experGroupBrief = "";
 		experGroupVerbose = "";
 		experGroupCSV = ""+this.runID+",";
+		experGroupAbbreviatedCSV = ""+this.runID;
 		for(Level level : levels){
 			experGroupBrief += level.factor.code + ":" + level.code + "  ";
 			experGroupVerbose += level.factor.code + ":" + level.code + "  ";
